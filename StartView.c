@@ -29,7 +29,7 @@ int main() {
 		if (UserOrder == 1) {
 			printf("로  딩  중....");
 			Sleep(1000);
-			system("cls");
+			system("cls"); //32번 줄 다음으로 게임 진행 코드 입력하면 됨
 		}
 		//2를 눌렀을 때 순위 확인
 		if (UserOrder == 2) {
