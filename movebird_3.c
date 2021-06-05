@@ -1,11 +1,17 @@
-#include <stdio.h>
-#include <windows.h>
+#include <stdio.h> //movebird프로젝트
 #include<stdbool.h>
 #include <conio.h>
-
+#include <windows.h>
+#include<time.h>
 #define bird_head 18
 
-void GotoXY(int x, int y) //커서의 위치를 x, y로 이동하는 함수
+void Console()
+{
+    system("mode con:cols=50 lines=50");
+}
+
+//커서의 위치를 x, y로 이동하는 함수
+void GotoXY(int x, int y)
 {
     COORD Pos;
     Pos.X = 2 * x;
@@ -13,7 +19,8 @@ void GotoXY(int x, int y) //커서의 위치를 x, y로 이동하는 함수
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), Pos);
 }
 
-int GetKeyDown() ////키보드의 입력을 받고, 입력된 키의 값을 반환하는 함수
+//키보드의 입력을 받고, 입력된 키의 값을 반환하는 함수
+int GetKeyDown()
 {
     if (_kbhit() != 0)
     {
@@ -25,19 +32,21 @@ int GetKeyDown() ////키보드의 입력을 받고, 입력된 키의 값을 반환하는 함수
 void DrawBird(int bird)
 {
     GotoXY(0, bird);
-    printf("      ***         \n");
-    printf("   *   O *        \n");
-    printf("   *     *        \n");
-    printf("      ***         \n");
-    printf("      L L         \n");
-    printf("                  \n");
+    printf("      ***         \n ");
+    printf("   *   O *           \n ");
+    printf("   *     *     \n");
+    printf("      ***        \n");
+    printf("      L L    \n");
 }
 
-int main() {
-    system("mode con cols=50 lines=50");
+int main(void)
+{
+    Console();
+
     int UserOrder = 0;
     int StartOrder = 0;
-    int End = 0; //마지막 장애물에 닿거나 떨어졌을 때 End++로 게임 종료시킬 변수
+    int End = 0;
+    int score = 0;
 
     if (StartOrder == 0) {
         printf("==================================================\n\n");
@@ -68,46 +77,81 @@ int main() {
         //3을 눌렀을 때 게임 종료
         if (UserOrder == 3) {
             system("cls");
-            printf("게임을 종료합니다.\n");
+            printf("\n\n\n\n\n               게임을 종료합니다.            \n\n\n\n");
             exit(1);
             system("cls");
-            while (1) {
-
-            }
         }
 
         //사용자가 1을 눌렀을 때 게임 시작
         if (UserOrder == 1) {
             printf("로  딩  중....");
             Sleep(1000);
-            system("cls"); //해당 줄 다음으로 게임 진행 코드 입력하면 됨
+            system("cls");
 
+            //게임 진행 코드
             bool UP = false;
             bool DOWN = true;
-            const int gravity = 1;
+            const int gravity = 2;
 
             int bird = bird_head;
 
-            while (true) {
-                if (GetKeyDown() == 'z') {
+            int End = 0;    //게임 종료를 위한 변수 초기화
+            int score = 0;   //점수 카운트 변수 초기화
+            clock_t start, curr;    //점수 변수 초기화
+            start = clock();
+
+
+            while (true)
+            {
+                //z를 누르면 새가 위로 안 누르면 아래로
+                if (GetKeyDown() == 'z')
+                {
                     UP = true;
                     DOWN = false;
                 }
-                bird += gravity;
                 if (UP) {
-                    bird -= gravity;
+                    bird -= gravity * 2;
+                    UP = false;
+                    DOWN = true;
                 }
                 else {
                     bird += gravity;
                 }
 
-                DrawBird(bird);
-                Sleep(60);  //점프 속도 조절
-                system("cls");    //창 클리어 나중에 써먹을 예정
+                //천장, 바닥 위치에 닿으면 게임 종료
+                if (bird <= 2)
+                {
+                    if (bird == 2)
+                    {
+                        End++;
+                        system("cls");
+                    }
+
+                }
+                if (bird >= 46)
+                {
+                    if (bird == 46)
+                    {
+                        End++;
+                        system("cls");
+                    }
+                }
+
+                DrawBird(bird); //새 그리기
+
+                curr = clock();   //현재 시간 받아오기
+                if (((curr - start) / CLOCKS_PER_SEC) >= 1)  // 1초가 넘었을 때
+                {
+                    score++;    //스코어 UP
+                    start = clock();    //시작 시간 초기화
+                }
+
+                Sleep(60);
+                system("cls");
             }
-            system("pause");
-        }
+        }system("pause");
     }
+    //게임 종료 화면
     if (End == 1) {
         printf("                                                  \n");
         printf("==================================================\n\n");
@@ -122,5 +166,8 @@ int main() {
         printf("           *    *    * *   *     * *              \n");
         printf("            ****      *    ***** *   *            \n");
         printf("==================================================\n\n");
+        printf("                     SCORE : %d                   \n\n", score);
+
+        Sleep(100);
     }
 }
