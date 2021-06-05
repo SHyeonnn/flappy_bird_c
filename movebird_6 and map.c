@@ -3,11 +3,10 @@
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
-//수정해서 push해야 하는 코드
 
 #define bird_head 18
 #define Map_High 0
-#define Map_Distance 20 //맵 사이의 간격
+#define Map_Distance 22 //맵 사이의 간격
 
 void Console() { //콘솔창 크기 조절 함수
     system("mode con:cols=50 lines=50");
@@ -21,8 +20,7 @@ void GotoXY(int x, int y) { //커서의 위치를 x, y로 이동하는 함수
 }
 
 int GetKeyDown() {  //키보드의 입력을 받고, 입력된 키의 값을 반환하는 함수
-    if (_kbhit() != 0)
-    {
+    if (_kbhit() != 0){
         return _getch();
     }
     return 0;
@@ -37,9 +35,8 @@ void DrawBird(int bird_x, int bird_y) {
     printf("      L L      \n");
 }
 
-void ShowScore(int score)
-{
-    GotoXY(19, 0);
+void ShowScore(int score){
+    GotoXY(20, 0);
     printf("SCORE : %d", score);
 }
 
@@ -48,7 +45,7 @@ void Map1(int Map_Position1) {          //첫 번째 장애물
     GotoXY(Map_Position1, Map_High + i);
     while (i < 50) {
         GotoXY(Map_Position1, Map_High + i);
-        if (i >= 22 && i <= 34)
+        if (i >= 10 && i <= 20)
             printf("   \n");
         else
             printf("***\n");
@@ -139,10 +136,9 @@ int main() {
             clock_t start, curr;                //점수 변수 초기화
             start = clock();
 
-
+            ShowScore(score);
             while (true) {                //게임 진행 코드
-                ShowScore(score);
-                score++;
+               
                 if (GetKeyDown() == 'z')  //z를 누르면 새가 위로 안 누르면 아래로
                 {
                     UP = true;
@@ -156,20 +152,20 @@ int main() {
                 else {
                     bird[1] += gravity;
                 }
-                if (bird[1] <= 2 || bird[1] >= 43) {  //천장, 바닥 위치에 닿으면 게임 종료
+                if (bird[1] <= 2 || bird[1] >= 46) {  //천장, 바닥 위치에 닿으면 게임 종료
                     End = 1;
                     system("cls");
                     break;
                 }
                 MapX1 -= 2; // 1번째 장애물를 움직이는 변수
-                if (MapX1 <= 3) {
+                if (MapX1 <= 1) { //이거 원래 1이었는데 내가 바꿈 근데 의미 없는 것 같아 근데 바꿔서 그런가
                     MapX1 = Map_Distance; // 1번째 장애물의 x좌표가 1보다 작아진다면 장애물의 위치 초기화
                 }
-                if (MapX2 == 20) {
+                if (MapX1 == 24) {
                     MapX2_Flag += 1; // 1번째 트리의 위치가 중간에 왔다면 2번째 장애물 출력을 위한 변수 초기화
                 }
                 if (MapX2_Flag == 1) {
-                    Map2(MapX2);
+                    //Map2(MapX2);
                     MapX2 -= 2;
                 }
                 if (MapX2 <= 3) {
@@ -178,9 +174,10 @@ int main() {
                 }
 
                 Map1(MapX1);
-                DrawBird(bird[0], bird[1]);         //새 그리기
-                Sleep(60);
-                system("cls");
+                Map2(MapX2);
+
+                DrawBird(0, bird[1]);         //새 그리기
+                Sleep(50);
 
                 curr = clock();                                   //현재 시간 받아오기
                 if (((curr - start) / CLOCKS_PER_SEC) >= 1) {     // 1초가 넘었을 때

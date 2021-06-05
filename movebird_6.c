@@ -1,13 +1,18 @@
-#include <stdio.h> //movebird프로젝트
+#include <stdio.h>     //flappy bird프로젝트
 #include <stdbool.h>
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
 #define bird_head 18
+#define Map_High 0
+#define Map_Distance 25
+void Map1(int Map_Position1); // 첫번째 장애물 모양 그리기
+void Map2(int Map_Position2); // 두번째 장애물 모양 그리기
+void Map3(int Map_Position3); // 세번째 장애물 모양 그리기
 
 
 void Console() {
-    system("mode con:cols=50 lines=50");
+    system("mode con:cols=50 lines=50"); //x는 25칸
 }
 
 //커서의 위치를 x, y로 이동하는 함수
@@ -34,13 +39,22 @@ void DrawBird(int bird_x, int bird_y) { //새 캐릭터를 출력시킬 함수
     printf("        ***      \n");
     printf("        L L      \n");
 }
-
+void ShowScore(int score)
+{
+    GotoXY(20, 0);
+    printf("SCORE : %d", score);
+}
 int main() {
     Console();
 
     int UserOrder = 0;  //사용자의 메뉴얼 선택을 위한 변수
     int End = 0;        //게임이 종료될 조건이 충족되었을 때 +1을 하여 게임을 종료시킬 수 있는 변수
     int score = 0;      //점수를 등록할 변수
+    int MapX1 = Map_Distance; //첫번째 장애물의 거리를 24로 지정
+    int MapX2 = Map_Distance; // 두번째 장애물의 거리를 24로 지정
+    int MapX3 = Map_Distance; // 세번째 장애물의 거리를 24로 지정
+    int MapX2_Flag = 0; // 두번째 장애물이 나오는 주기 설정
+    int MapX3_Flag = 0; // 세번째 장애물이 나오는 주기 설정
 
     if (End == 0) {     //시작 화면 출력
         printf("==================================================\n\n");
@@ -99,17 +113,14 @@ int main() {
             bool DOWN = true;
             const int gravity = 2;
 
-            int bird[2] = { 0,bird_head };
+            int bird[2] = { 0, bird_head };
 
             clock_t start, curr;    //점수 변수 초기화
             start = clock();
 
-            while (true)
-            {
-                score++;
-                //z를 누르면 새가 위로 안 누르면 아래로
-                if (GetKeyDown() == 'z')
-                {
+            while (true) {                 //z를 누르면 새가 위로 안 누르면 아래로
+                void ShowScore(score);
+                if (GetKeyDown() == 'z') {
                     UP = true;
                     DOWN = false;
                 }
@@ -129,7 +140,35 @@ int main() {
                     system("cls");
                     break;
                 }
+                MapX1 -= 2; // 1번째 장애물를 움직이는 변수
 
+                if (MapX1 <= 1)
+                    MapX1 = Map_Distance; // 1번째 장애물의 x좌표가 1보다 작아진다면 장애물의 위치 초기화
+                if (MapX1 == 13) { 
+                    MapX2_Flag += 1; // 1번째 장애물의 위치가 중간에 왔다면 2번째 장애물 출력을 위한 변수 초기화
+                }
+                if (MapX1 == 8) {
+                    MapX3_Flag += 1;
+                }
+                if (MapX2_Flag == 1) {
+                    Map2(MapX2);
+                    MapX2 -= 2;
+                }
+                if (MapX2 <= 1) {
+                    MapX2 = Map_Distance; // 2번째 장애물의 x좌표가 1보다 작아진다면 위치 초기화
+                    MapX2_Flag = 0;
+                }
+                if (MapX3_Flag == 1) {
+                    Map3(MapX3);
+                    MapX3 -= 2;
+                }
+                if (MapX3 <= 1) {
+                    MapX3 = Map_Distance; // 3번째 장애물의 x좌표가 1보다 작아진다면 위치 초기화
+                    MapX3_Flag = 0;
+                }
+
+                Map1(MapX1);
+                ShowScore(score);
                 DrawBird(bird[0], bird[1]); //새 그리기
 
                 curr = clock();   //현재 시간 받아오기
@@ -138,8 +177,8 @@ int main() {
                     score++;    //스코어 UP
                     start = clock();    //시작 시간 초기화
                 }
-
-                Sleep(60);
+                ShowScore(score);
+                Sleep(30);
                 system("cls");
             }
         }
@@ -162,5 +201,42 @@ int main() {
         printf("                   SCORE : %d                     \n\n", score);
 
         Sleep(100);
+    }
+}
+void Map1(int Map_Position1) //첫번째 장애물
+{
+    int i = 0;
+    while (i < 50) {
+        GotoXY(Map_Position1, Map_High + i);
+        if (i >= 11 && i <= 28)
+            printf("   \n");
+        else
+            printf("***\n");
+        i++;
+    }
+}
+void Map2(int Map_Position2) // 두번째 장애물
+{
+    int i = 0;
+    while (i < 50) {
+        GotoXY(Map_Position2, Map_High + i);
+        if (i >= 19 && i <= 33)
+            printf("   \n");
+        else
+            printf("***\n");
+        i++;
+    }
+}
+
+void Map3(int Map_Position3) // 세번째 장애물
+{
+    int i = 0;
+    while (i < 50) {
+        GotoXY(Map_Position3, Map_High + i);
+        if (i >= 22 && i <= 38)
+            printf("   \n");
+        else
+            printf("***\n");
+        i++;
     }
 }
