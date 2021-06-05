@@ -1,3 +1,3 @@
-# flappy_bird_c
-김유민
-윤서현
+# Implement of Flappy Bird Game Using C Language
+## SCH
+### YM, DH, SH, SH
