@@ -2,25 +2,25 @@
 #include <windows.h>
 
 void gotoxy(int x, int y) {
-	COORD pos = { 0, 18 };
-	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+   COORD pos = { 0, 18 };
+   SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
 void console() {
-	system("mode con cols=50 lines=50");
+   system("mode con cols=50 lines=50");
 }
 
 void bird() {
-	printf("      ***         \n ");
-	printf("   *   O *           \n ");
-	printf("   *     *     \n");
-	printf("      ***        \n");
-	printf("      L L    \n");
-	printf("         \n");
+   printf("      ***         \n ");
+   printf("   *   O *           \n ");
+   printf("   *     *     \n");
+   printf("      ***        \n");
+   printf("      L L    \n");
+   printf("         \n");
 }
 
 void map() {
-	printf("@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　　　　　　@@@　　　　　@@@@@@@@@　　　　　　　@@@　　　　　　　@@@　　　　　@@@　　　　　@@@\n");
+  printf("@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　　　　　　@@@　　　　　@@@@@@@@@　　　　　　　@@@　　　　　　　@@@　　　　　@@@　　　　　@@@\n");
 	printf("@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　　　　　　@@@　　　　　@@@@@@@@@　　　　　　　@@@　　　　　　　@@@　　　　　@@@　　　　　@@@\n");
 	printf("@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　　　　　　@@@　　　　　@@@@@@@@@　　　　　　　@@@　　　　　　　@@@　　　　　@@@　　　　　@@@\n");
 	printf("@@@　　　　　@@@　　　　　@@@　　　　　@@@　　　　　　　　　　　 @@@　　　　　@@@　　　　　　　　　　@@@　　　　　@@@@@@@@@　　　　　　　@@@　　　　　　　@@@　　　　　@@@　　　　　@@@\n");
@@ -32,9 +32,9 @@ void map() {
 	printf("@@@　　　　　@@@　　　　　@@@　　　　　　　　　　　　　　　　　　　　　　　　 @@@　　　　　　　　　　　　　　　　　　　　　　 　　　　　　　　 　　　　 　@@@　　　　　@@@　　　　　@@@\n");
 	printf("@@@　　　　　@@@　　　　　@@@　　　　　　　　　　　　　　　　　  　　　　　　 @@@　　　　　　　　　　　　　　　　　　　　　　 　　　　　　　　 　　　　　 @@@　　　　　@@@　　　　　@@@\n");
 	printf("　　　　　　 @@@　　　　　　 　　　　　　　　　　　 　　　　　　　　　　　　　　 　　　　　　　　　　　 　　　　　　　　　　 　　　　　　　　 　　　　　　@@@　　　　　@@@　　　　　@@@\n");
-	printf("　　　　 　　@@@　　　　　　　　　　　　 　　　　　　　　　　 　　　　　　　　　 　　　　　　　　　　　　　　　　　 　 　　　　　　　　　　　 　　　　　　@@@　　　　　@@@　　　　　 　\n");
-	printf("　　　　 　　@@@　　　　　　　　　　　 　　　　　　　　　　　 　　　　　　　　　 　　　　　　　　　　　　 　　　　　　　　　　　　　　　　　  　　　　　　@@@　　　　　@@@　　　　　 　\n");
-	printf("　　　　 　 　　　　　　　　　　　　　 　　　　　　 @@@　　　　　　　　　　　 　 　　　　　　　　　　　　　　　　　 　　　　　　　　　　 @@@　　　　　　　@@@　　　　　@@@　　　　　 　\n");
+	printf("　　　　 　　@@@　　　　　　　　　　　　 　　　　　　　　　　 　　　　　　　　　 　　　　　　　　　　　　　　　　　 　 　　　　　　　　　　　 　　　　　　　 　　　　　@@@　　　　　 　\n");
+	printf("　　　　 　　@@@　　　　　　　　　　　 　　　　　　　　　　　 　　　　　　　　　 　　　　　　　　　　　　 　　　　　　　　　　　　　　　　　  　　　　　　　 　　　　　@@@　　　　　 　\n");
+	printf("　　　　 　 　　　　　　　　　　　　　 　　　　　　 @@@　　　　　　　　　　　 　 　　　　　　　　　　　　　　　　　 　　　　　　　　　　 @@@　　　　　　　　 　　　　　@@@　　　　　 　\n");
 	printf("　　　　 　　　 　　　　　　 　　　　　　　　　　　 @@@　　　　　　　　　　　 　 　　　　　　　　　　　　　　　　　　　　　　　　　　　　@@@　　　　　　　　 　　　　　@@@　　　　　 　\n");
 	printf("　　　　 　 　　　　　　　　　　　　　 　　　　　　 @@@　　　　　　　　　　　 　 　　　　　　　　　　　　　　　　 　　　　　　　　　　　 @@@　　　　　　　　　　　　　 @@@　　　　　 　\n");
 	printf("　　　　　　　　　　　　　　　　　　　 　　　　　　 @@@　　　　　　　　　　　 　 　　　　　　　　　　@@@　　　　　　　　　 　　　　　　　@@@　　　　　　　　 　　　　　 　　　　　　 　\n");
@@ -52,24 +52,9 @@ void map() {
 
 }
 
-while (1)
-{	
-	map -= 2; // 1번째 나무를 움직이는 변수
-
-	if (mapx <= 3)
-	{
-		mapX = 0; // 1번째 나무의 x좌표가 3보다 작아진다면 나무의 위치 초기화
-	}
-
-	if (map1 == 40)
-	{
-		map += 1;; // 1번째 트리의 위치가 중간에 왔다면 2번째 트리 출력을 위한 변수 초기화
-	}
-}
-
 int main() {
-	gotoxy(0, 18);
-	console();
-	bird();
-	map();
+   gotoxy(0, 18);
+   console();
+   bird();
+   map();
 }
