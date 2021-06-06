@@ -136,7 +136,7 @@ int main() {
                 if (MapX1 <= 1) {
                     MapX1 = Map_Distance; //첫 번째 장애물의 x좌표가 1보다 작아진다면 장애물의 위치 초기화
                 }
-                if (MapX1 == 13) { 
+                if (MapX1 == 15) { 
                     MapX2_Flag += 1; //첫 번째 장애물의 위치가 중간에 왔다면 두 번째 장애물 출력을 위한 변수 초기화
                 }
                 if (MapX1 == 8) {
@@ -159,6 +159,8 @@ int main() {
                     MapX3_Flag = 0;
                 }
                 Map1(MapX1);
+                Sleep(30);
+                system("cls");
                 ShowScore(score);
                 DrawBird(bird[0], bird[1]); //새 그리기
 
@@ -169,8 +171,9 @@ int main() {
                     start = clock();   //시작 시간 초기화
                 }
                 ShowScore(score);
-                Sleep(30);
+                //Sleep(30);
                 system("cls");
+                Sleep(30);
             }
         }
     }

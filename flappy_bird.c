@@ -3,6 +3,10 @@
 #include <conio.h>
 #include <windows.h>
 #include <time.h>
+#include <string.h>
+
+#pragma warning (disable : 4996)
+
 
 #define bird_head 18
 #define Map_High 0
@@ -12,6 +16,7 @@ void Map1(int Map_Position1); // 첫번째 장애물 모양 그리기
 void Map2(int Map_Position2); // 두번째 장애물 모양 그리기
 void Map3(int Map_Position3); // 세번째 장애물 모양 그리기
 
+void endrank(int endinput);
 
 void Console() {  //콘솔창의 크기를 설정하는 함수
     system("mode con:cols=50 lines=50");
@@ -54,6 +59,7 @@ int main() {
     int MapX3 = Map_Distance; // 세번째 장애물의 거리를 24로 지정
     int MapX2_Flag = 0; // 두번째 장애물이 나오는 주기 설정
     int MapX3_Flag = 0; // 세번째 장애물이 나오는 주기 설정
+    int Endinput = 0;
 
     if (End == 0) {     //시작 화면 출력
         printf("==================================================\n\n");
@@ -77,8 +83,16 @@ int main() {
 
         if (UserOrder == 2) {  //2를 눌렀을 때 "순위" 확인
             system("cls");
+            char line[255];
+            int count = 1;
+            FILE* file_pt;
+            fopen_s(&file_pt, "rank.txt", "a+");
             printf("==================================================\n\n");
             printf("              순                위                \n\n\n");
+            while (fgets(line, sizeof(line), file_pt) != NULL) {
+                printf("\t\t%d등 \t%s\n\n", count, line);
+                count++;
+            }
         }
         if (UserOrder == 3) {  //3을 눌렀을 때 "게임 방법" 확인
             system("cls");
@@ -210,8 +224,87 @@ int main() {
         printf("==================================================\n\n");
         printf("                   SCORE : %d                     \n\n", score);
 
+        printf("          1. 순위 등록   2. 게임 종료            \n\n");
+        printf("                    -->  ");
+        scanf_s("%d", &Endinput);
+        if (Endinput == 1) {
+            endrank(score);
+        }
         Sleep(100);
     }
+}
+void endrank(int score) {
+    system("cls");
+    char name[6] = { 0 };
+    char rank[3][255] = { 0 };
+    char rank_score[3][255] = { 0 };
+    int count = 0;
+    char* temp_1 = "";
+    char temp_2[255] = { 0 };
+    char line[255];
+
+    FILE* file_pt;
+    fopen_s(&file_pt, "rank.txt", "a+");
+    while (fgets(line, sizeof(line), file_pt) != NULL) {
+        if (line[0] != ' ') {
+            printf("%s", line);
+            strcpy(temp_2, line);
+
+            temp_1 = strtok(temp_2, " ");
+            strcpy(rank[count], temp_1);
+
+            temp_1 = strtok(NULL, " ");
+            strcpy(rank_score[count], temp_1);
+
+            for (int i = 0; rank_score[count][i] != 0; i++) {
+                // 줄바꿈 문자를 만난 경우!
+                if (rank_score[count][i] == '\n') {
+                    rank_score[count][i] = 0;  // 줄바꿈 문자가 있던 위치에 NULL 문자를 대입한다!
+                    break;        // 반복을 중단한다!
+                }
+            }
+
+            count++;
+        }
+
+
+    }
+
+
+
+    printf("                                                  \n");
+    printf("==================================================\n\n");
+    printf("                                                  \n");
+    printf("                                                  \n");
+    printf("                   SCORE : %d                     \n\n", score);
+    printf("                                                  \n");
+    printf("          Ranking 이니셜을 입력하세요            \n\n");
+    printf("                 * 5글자 가능                    \n\n");
+    printf("                                                  \n");
+    printf("                    -->  ");
+    scanf("%s", name);
+
+    for (int i = 0; i < 3; i++) {
+        if (score >= atoi(rank_score[i])) {
+            for (int j = 1; j >= i; j--) {
+                strcpy(rank_score[j + 1], rank_score[j]);
+                strcpy(rank[j + 1], rank[j]);
+            }
+            strcpy(rank[i], name);
+            itoa(score, rank_score[i], 10);
+            break;
+        }
+    }
+    fclose(file_pt);
+    fopen_s(&file_pt, "rank.txt", "w+");
+
+    for (int i = 0; i < 3; i++) {
+        fprintf(file_pt, "%s %s\n", rank[i], rank_score[i]);
+    }
+    fclose(file_pt);
+
+
+
 }
 void Map1(int Map_Position1) //첫 번째 장애물
 {
